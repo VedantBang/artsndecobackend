@@ -22,7 +22,7 @@ router.get('/all', async (req,res,next) => {
 });
 
 
-router.get('/fest', upload.none(),async (req,res,next) => {
+router.post('/fest', upload.none(),async (req,res,next) => {
 	try{
 		let { fest, year, name } = req.body;
 
