@@ -97,6 +97,13 @@ router.put('/addImages', upload.array('photos'), async (req,res,next) => {
     	year = parseInt(year);
     	titles = titles.split(',');
 
+    	if(titles.length !== req.files.length){
+			let err = new Error('Number of titles do not match number of files');
+			err.status = 400;
+			next(err);
+			return;
+		}
+
     	if(fest !== 'other') name = '';
 		else {
 			if(!name){

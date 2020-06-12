@@ -9,10 +9,10 @@ const router = express.Router();
 router.get('/all', async (req,res,next) => {
 	try{
 		let data = await Album.find({});
-		data = cut(data, ['fest','year','name','theme','images']);
+		data = data.map(entry => cut(entry, ['fest','year','name','theme','images']));
 		data = data.map(entry => {
 			return {
-				fest: entry.fest, year: obj.year, name: obj.name, theme: obj.theme,
+				fest: entry.fest, year: entry.year, name: entry.name, theme: entry.theme,
 				coverImage: entry.images[0]
 			}
 		});
