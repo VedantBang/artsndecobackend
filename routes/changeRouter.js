@@ -127,6 +127,49 @@ router.put('/addImages', upload.array('photos'), async (req,res,next) => {
 });
 
 
+router.patch('/removeImages', upload.none(), async (req,res,next) => {
+	try{
+		let { fest, year, name, remove } = req.body;
+
+		if(!year || !fest) {
+      		let err = new Error("Invalid input");
+      		err.status = 400;
+      		next(err);
+      		return;
+    	}
+
+    	year = parseInt(year);
+    	remove = remove.split(',');
+
+    	if(fest !== 'other') name = '';
+		else {
+			if(!name){
+				let err = new Error('name must be specified when fest is set to other');
+    			err.status = 400;
+    			next(err);
+    			return;
+			}
+		}
+
+		let album = await Album.findOne({ fest, year, name });
+		if(!album){
+			let err = new Error('Fest not found');
+			err.status = 404;
+			next(err);
+			return;
+		}
+
+		let newList = album.images.filter(entry => !remove.includes(entry.link));
+		album.images = newList;
+
+		await album.save();
+
+		res.status(200).json({ ok:1 });
+
+	} catch(err){ next(err); }
+});
+
+
 router.delete('/delete', upload.none(), async (req,res,next) => {
 	try{
 		let { fest, year, name } = req.body;
