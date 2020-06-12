@@ -40,6 +40,13 @@ router.post('/new', upload.array('photos'), async (req,res,next) => {
 		titles = titles.split(',');
 		if(!theme) theme = "";
 
+		if(titles.length !== req.files.length){
+			let err = new Error('Number of titles do not match number of files');
+			err.status = 400;
+			next(err);
+			return;
+		}
+
 		if(fest !== 'other') name = '';
 		else {
 			if(!name){
@@ -127,7 +134,7 @@ router.put('/addImages', upload.array('photos'), async (req,res,next) => {
 });
 
 
-router.patch('/removeImages', upload.none(), async (req,res,next) => {
+router.put('/removeImages', upload.none(), async (req,res,next) => {
 	try{
 		let { fest, year, name, remove } = req.body;
 

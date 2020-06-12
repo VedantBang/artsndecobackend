@@ -5,6 +5,7 @@ require('./config/db')();
 
 const userRouter = require('./routes/userRouter');
 const changeRouter = require('./routes/changeRouter');
+const displayRouter = require('./routes/displayRouter');
 
 const app = express();
 

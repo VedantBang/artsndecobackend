@@ -23,7 +23,7 @@ const albumSchema = new mongoose.Schema({
 	theme: {
 		type: String,
 		default: ''
-	}
+	},
 	images: [imageSchema]
 });
 
